@@ -36,4 +36,11 @@ describe Ubidots::User do
       user.datasources.should == [1, 2 , 3]
     end
   end
+
+  describe "#profile" do
+    it "returns the user's profile" do
+      user = Ubidots::User.find("federico")
+      user.profile.should == params.merge(username: "federico")
+    end
+  end
 end

@@ -3,11 +3,11 @@ require 'ubidots/user_service'
 module Ubidots
   class User
     attr_reader :datasources, :variables, :followers, :following
-    attr_reader :created_at, :blog, :username
+    attr_reader :created_at, :blog, :username, :profile
 
     def initialize(params={})
-      @instance = params
-      params.each do |key, value|
+      @profile = params
+      @profile.each do |key, value|
         instance_variable_set("@#{key}", value)
       end
     end
