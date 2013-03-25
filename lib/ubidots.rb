@@ -19,7 +19,15 @@ module Ubidots
     @@token = JSON.parse(response.body)['token']
   end
 
+  def self.datasources
+    DatasourceService.retrieve_without_username
+  end
+
   protected
+
+  def invalid?
+    !defined?(@@token) || !defined?(@@key)
+  end
 
   def default_headers
     raise "Default headers not set (unknown token)" if @@token.nil?

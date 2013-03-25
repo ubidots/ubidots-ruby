@@ -15,3 +15,9 @@ end
 @@key = "test"
 @@token = "test"
 
+# useful for testing any cases of CollectionWithFinders
+class String
+  def primary_key
+    length
+  end
+end
