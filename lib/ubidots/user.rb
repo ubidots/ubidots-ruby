@@ -19,7 +19,7 @@ module Ubidots
     end
 
     def datasources
-      DataSourceService.retrieve_for_user(username)
+      DatasourceService.retrieve(username).to_collection_with_finders
     end
   end
 end
