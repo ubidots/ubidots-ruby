@@ -25,11 +25,6 @@ obtain your account API key on the website and then call `Ubidots.api_key`:
 
        Ubidots.api_key("458cacdd594246daf5126bf106ccaaefabf1bf56")
 
-Now that you're in you can get your token by calling `Ubidots.get_token`:
-
-       Ubidots.get_token
-
-### Authentication
 
 ### Users
 

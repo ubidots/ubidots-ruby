@@ -14,15 +14,16 @@ describe Ubidots::User do
 
   describe ".find" do
     it "finds a user through the API" do
-      Ubidots::UserService.should_receive(:retrieve).with(42).and_return(params)
-      user = Ubidots::User.find(42)
+      Ubidots::UserService.should_receive(:retrieve).with("federico").and_return(params)
+      user = Ubidots::User.find("federico")
       user.datasources.should == []
       user.following.should == 12
+      user.username.should == "federico"
     end
 
     it "returns nil if no user is found" do
-      Ubidots::UserService.should_receive(:retrieve).with(42).and_return(nil)
-      user = Ubidots::User.find(42)
+      Ubidots::UserService.should_receive(:retrieve).with("federico").and_return(nil)
+      user = Ubidots::User.find("federico")
       user.should be_nil
     end
   end

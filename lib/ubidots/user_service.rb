@@ -1,7 +1,7 @@
 module Ubidots
   class UserService
-    def self.retrieve(user_id)
-      url = "#{"API_URL/users/user_id"}"
+    def self.retrieve(username)
+      url = "#{API_URL}/users/#{username}/"
       response = RestClient.get url, { "X-UbidotsApiKey" => @@key }
       JSON.parse(response.body)
     end

@@ -3,6 +3,8 @@ require "json"
 require "ubidots/version"
 require "ubidots/constants"
 require "ubidots/user"
+require "ubidots/util/collection_with_finders"
+require "ubidots/util/array"
 
 module Ubidots
   include Constants

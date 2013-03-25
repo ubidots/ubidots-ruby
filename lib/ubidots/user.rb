@@ -3,7 +3,7 @@ require 'ubidots/user_service'
 module Ubidots
   class User
     attr_reader :datasources, :variables, :followers, :following
-    attr_reader :created_at, :blog
+    attr_reader :created_at, :blog, :username
 
     def initialize(params={})
       @instance = params
@@ -12,10 +12,14 @@ module Ubidots
       end
     end
 
-    def self.find(user_id)
-      data = UserService.retrieve(user_id)
+    def self.find(username)
+      data = UserService.retrieve(username)
       return nil if data.nil?
-      User.new(data)
+      User.new(data.merge( username: username ))
+    end
+
+    def datasources
+      DataSourceService.retrieve_for_user(username)
     end
   end
 end
