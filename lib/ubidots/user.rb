@@ -21,5 +21,9 @@ module Ubidots
     def datasources
       DatasourceService.retrieve(username).to_collection_with_finders
     end
+
+    def primary_key
+      username
+    end
   end
 end
