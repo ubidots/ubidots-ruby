@@ -1,4 +1,4 @@
- # Ubidots
+# Ubidots
 
 Ruby gem for connecting to the [Ubidots](http://ubidots.com) API.
 
