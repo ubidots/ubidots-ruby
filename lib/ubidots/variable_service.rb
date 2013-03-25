@@ -5,5 +5,11 @@ module Ubidots
       response = RestClient.get url, { "X-UbidotsApiKey" => @@key }
       JSON.parse(response.body).to_collection_with_finders
     end
+
+    def self.retrieve_for_current_user
+      url = "#{Ubidots::API_URL}/variables/"
+      response = RestClient.get url, { "X-UbidotsApiKey" => @@key }
+      JSON.parse(response.body).to_collection_with_finders
+    end
   end
 end

@@ -24,6 +24,10 @@ module Ubidots
     DatasourceService.retrieve_without_username
   end
 
+  def self.variables
+    VariableService.retrieve_for_current_user
+  end
+
   protected
 
   def invalid?
