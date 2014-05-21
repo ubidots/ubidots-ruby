@@ -16,7 +16,7 @@ module Ubidots
 
     url = "#{API_URL}/auth/token/"
     @@key = key
-    response = RestClient.post url, { "X-UbidotsApiKey" => @@key }
+    response = RestClient.post url, { "X-UBIDOTS-APIKEY" => @@key }
     @@token = JSON.parse(response.body)['token']
   end
 
