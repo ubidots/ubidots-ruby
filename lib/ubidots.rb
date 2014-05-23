@@ -22,43 +22,36 @@ module Ubidots
       end
     end
 
-    private
-
-    def transform_to_datasource_objects(raw_items)
-      datasources = []
-      raw_items.each_with_index do |raw_item, i|
-        datasources[i] = Ubidots::Datasource.new(raw_item)
-      end
-      return datasources
-    end
-
-    def transform_to_variable_objects(raw_items)
-      variables = []
-      raw_items.each_with_index do |raw_item, i|
-        variables[i] = Ubidots::Variable.new(raw_item)
-      end
-      return variables
-    end
-
     public
-
 
     def get_datasources
       response = @bridge.get 'datasources'
       raw_items = response["results"]
-      return transform_to_datasource_objects raw_items
+      return @bridge.transform_to_datasource_objects raw_items
     end
 
     def get_variables
       response = @bridge.get 'variables'
       raw_items = response["results"]
-      return transform_to_variable_objects raw_items
+      return @bridge.transform_to_variable_objects raw_items
     end
 
-    protected
+    def get_datasource(id=nil)
+      endpoint = "datasources/#{id}"
+      response = @bridge.get endpoint
+      return Ubidots::Datasource.new(@bridge, response)
+    end
 
-    def invalid?
-      !defined?(@@token) || !defined?(@@key)
+    def create_datasource(data)
+      endpoint = "datasources";
+      response = @bridge.post endpoint, data
+      return Ubidots::Datasource.new(@bridge, response)
+    end
+
+    def get_variable(id=nil)
+      endpoint = "variables/#{id}"
+      response = @bridge.get endpoint
+      return Ubidots::Variable.new(@bridge, response)
     end
 
   end

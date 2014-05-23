@@ -34,18 +34,34 @@ module Ubidots
     def prepare_data(data)
       return data
     end
-  
+
     public
+
+    def transform_to_datasource_objects(raw_items)
+      datasources = []
+      raw_items.each_with_index do |raw_item, i|
+        datasources[i] = Ubidots::Datasource.new(self, raw_item)
+      end
+      return datasources
+    end
+
+    def transform_to_variable_objects(raw_items)
+      variables = []
+      raw_items.each_with_index do |raw_item, i|
+        variables[i] = Ubidots::Variable.new(self, raw_item)
+      end
+      return variables
+    end
 
     def post_with_apikey(endpoint)
       headers = @apikey_header
-      response = RestClient.post "#{@api_key}#{endpoint}", {}, headers
+      response = RestClient.post "#{@base_url}#{endpoint}", {}, headers
       return JSON.parse(response.body)
     end
 
     def get(endpoint)
       headers = @token_header
-      response = RestClient.get "#{@api_key}#{endpoint}", headers
+      response = RestClient.get "#{@base_url}#{endpoint}", headers
       return JSON.parse(response.body)
     end
         
@@ -56,17 +72,16 @@ module Ubidots
     end
 
 
-    def post(path, data)
+    def post(endpoint, data)
       headers = @token_header
       data = prepare_data(data)
       response = RestClient.post "#{@base_url}#{endpoint}", data, headers
       return JSON.parse(response.body)
     end
 
-    def delete(path)
+    def delete(endpoint)
       headers = @token_header
-      response = RestClient.delete "#{@api_key}#{endpoint}", headers
-      return JSON.parse(response.body)
+      RestClient.delete "#{@base_url}#{endpoint}", headers
     end
   end
 end
