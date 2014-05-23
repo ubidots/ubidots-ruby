@@ -1,11 +1,11 @@
-require 'ubidots/datasource_service'
 module Ubidots
   class Datasource
 
     attr_reader :id, :name, :url, :last_activity, :tags, :description, :created_at
     attr_reader :owner, :parent, :context, :variables_url, :number_of_variables
 
-    def initialize(data)
+    def initialize(bridge, data)
+      @bridge = bridge
       @id = data["id"]
       @name = data["name"]
       @url = data["url"]
@@ -22,18 +22,21 @@ module Ubidots
 
     def get_variables
       endpoint = "datasources/#{@id}/variables"
-      response = Ubidots::ApiClient::get endpoint
+      response = @bridge.get endpoint
       raw_items = response["results"]
-      return Ubidots::ApiClient::transform_to_variable_objects raw_items
-    end
-    
-
-    def variables
-      VariableService.retrieve_for_datasource(self)
+      return @bridge.transform_to_variable_objects raw_items
     end
 
-    def primary_key
-      name
+    def remove_datasource
+      endpoint = "datasources/#{@id}";
+      @bridge.delete endpoint
     end
+
+    def create_variable(data)
+      endpoint = "datasources/#{@id}/variables"
+      response = @bridge.post endpoint, data
+      return Ubidots::Variable.new(@bridge, response)
+    end
+
   end
 end
