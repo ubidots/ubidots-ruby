@@ -11,31 +11,80 @@ require "ubidots/util/array"
 module Ubidots
   include Constants
 
-  def self.api_key(key=nil)
-    raise "Invalid API key: #{key}" if key.nil?
+  class ApiClient  
+   
+    def initialize(api_key=nil)
+      raise "Invalid API key: #{key}" if api_key.nil?  
+      @api_key = api_key
+      set_api_key_header
+      get_token
+      set_token_header
+    end
 
-    url = "#{API_URL}/auth/token/"
-    @@key = key
-    response = RestClient.post url, { "X-UbidotsApiKey" => @@key }
-    @@token = JSON.parse(response.body)['token']
+    private
+
+    def get_token
+      endpoint = "auth/token/"
+      response = post_with_apikey endpoint
+      @token = response['token']
+    end
+
+    def set_api_key_header
+      @apikey_header = { 'X-UBIDOTS-APIKEY' => @api_key }
+    end
+
+    def set_token_header
+      @token_header = { 'X-AUTH-TOKEN' => @token }
+    end
+
+    def transform_to_datasource_objects(raw_items)
+      datasources = []
+      raw_items.each_with_index do |raw_item, i|
+        datasources[i] = Ubidots::Datasource.new(raw_item)
+      end
+      return datasources
+    end
+
+    def transform_to_variable_objects(raw_items)
+      variables = []
+      raw_items.each_with_index do |raw_item, i|
+        variables[i] = Ubidots::Variable.new(raw_item)
+      end
+      return variables
+    end
+
+    public
+
+    def post_with_apikey(endpoint)
+      headers = @apikey_header
+      response = RestClient.post "#{Ubidots::Constants::API_URL}#{endpoint}", {}, headers
+      return JSON.parse(response.body)
+    end
+
+    def get(endpoint)
+      headers = @token_header
+      response = RestClient.get "#{Ubidots::Constants::API_URL}#{endpoint}", headers
+      return JSON.parse(response.body)
+    end
+
+    def get_datasources
+      response = get 'datasources'
+      raw_items = response["results"]
+      return transform_to_datasource_objects raw_items
+    end
+
+    def get_variables
+      response = get 'variables'
+      raw_items = response["results"]
+      return transform_to_variable_objects raw_items
+    end
+
+    protected
+
+    def invalid?
+      !defined?(@@token) || !defined?(@@key)
+    end
+
   end
 
-  def self.datasources
-    DatasourceService.retrieve_without_username
-  end
-
-  def self.variables
-    VariableService.retrieve_for_current_user
-  end
-
-  protected
-
-  def invalid?
-    !defined?(@@token) || !defined?(@@key)
-  end
-
-  def default_headers
-    raise "Default headers not set (unknown token)" if @@token.nil?
-    { "X-Auth-Token" => @@token }
-  end
 end
