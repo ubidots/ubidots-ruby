@@ -24,7 +24,7 @@ module Ubidots
 		def get_values
 			endpoint = "variables/#{@id}/values"
 			response = @bridge.get endpoint
-			return response 
+			return response["results"] 
 		end
 
     def save_value(data)

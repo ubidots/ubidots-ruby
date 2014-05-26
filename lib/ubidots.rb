@@ -2,12 +2,9 @@ require "rest_client"
 require "json"
 require "ubidots/version"
 require "ubidots/constants"
-require "ubidots/user"
 require "ubidots/variable"
 require "ubidots/datasource"
 require "ubidots/server_bridge"
-require "ubidots/util/collection_with_finders"
-require "ubidots/util/array"
 
 module Ubidots
   include Constants
