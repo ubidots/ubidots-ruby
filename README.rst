@@ -29,7 +29,7 @@ Or install it yourself as:
 Connecting to the API
 ----------------------
 
-Before playing with the API you must be able to connect to it using your private API key, which can be found `in your profile <http://app.ubidots.com/userdata/api/>`_.
+Before playing with the API you should connect to it using your private API key, which can be found `in your profile <http://app.ubidots.com/userdata/api/>`_.
 
 If you don't have an account yet, you can `create one here <http://app.ubidots.com/accounts/signup/>`_.
 
@@ -43,7 +43,7 @@ Once you have your API key, you can connect to the API by creating an ApiClient 
     @api = Ubidots::ApiClient.new("7fj39fk3044045k89fbh34rsd9823jkfs8323")
 
 
-Now you have an instance of ApiClient ("api") which can be used to connect to the API service.
+Now you have an instance of ApiClient ("api") which can be used to connect to the Ubidots API.
 
 Saving a new Value to a Variable
 --------------------------------
@@ -68,10 +68,10 @@ You can also specify a timestamp (optional):
 
 If no timestamp is specified, the API server will assign the current time to it. We think it's always better for you to specify the timestamp so the record reflects the exact time the value was captured, not the time it arrived to our servers.
 
-Creating a DataSource
+Creating a Data Source
 ----------------------
 
-As you might know by now, a data source represents a device or a virtual source.
+As you might know by now, a data source represents a device that's generating time-series data.
 
 This line creates a new data source:
 
@@ -106,7 +106,7 @@ If you only want the last N values call the method with the number of elements y
     all_values = my_variable.get_values()
     
 
-Getting a group of Data sources
+Getting a group of Data Sources
 --------------------------------
 
 If you want to get all your data sources you can a method on the ApiClient instance directly. This method return a objects Datasource array.
@@ -128,10 +128,10 @@ For example, if a data source has the id 51c99cfdf91b28459f976414, it can be ret
 
     my_specific_datasource = @api.get_datasource('51c99cfdf91b28459f976414')
 
-Getting a group of  Variables from a Data source
+Getting a group of Variables from a Data source
 -------------------------------------------------
 
-With a data source. you can also retrieve some or all of its variables:
+You can also retrieve some or all of the variables of a data source:
 
 .. code-block:: ruby
 
